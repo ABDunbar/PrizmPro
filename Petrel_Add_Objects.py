@@ -12,30 +12,17 @@ from cegalprizm.pycoderunner import WorkflowDescription, DomainObjectsEnum, Meas
 ####  WORKFLOW DESCRIPTION ####
 # The class WorkflowDescription is used to define the Cegal Prizm workflow. It is assigned to a Python variable called 'pwr_description'
 pwr_description = WorkflowDescription(name="Smooth well log",
-                                      category="Demo: Python operations - Wells",
+                                      category="Cegal",
                                       description="The script applies a rolling filter to smooth a well log, using a specified window size to determine the range of data points considered for each smoothing operation. This is a simple Cegal Prizm worklfow demonstrating the deployment of Python code to Petrel users and how you can expand Petrel functionality with additional algorithms.",
-                                      authors="author@company",
-                                      version="1.0")
-
-pwr_description = WorkflowDescription(name="Vsh Calculator",
-                                      category="Demo: Python operations - Wells",
-                                      description="Calculate Vsh using different algorithms",
                                       authors="author@company",
                                       version="1.0")
 
 vel_description='''This Cegal Prizm workflows applies a velocity anisotropy correction on deviated wells. The input log for Vp and Vs must be the brine saturated case.'''
 pwr_description = WorkflowDescription(name="Velocity anisotropy",
-                                      category="Demo: Python operations - Wells",
+                                      category="Cegal",
                                       description=vel_description,
                                       authors="author@company.com",
                                       version="1.0")
-
-pwr_description = WorkflowDescription(name="Despike logs",
-                                      category="Petrophysics",
-                                      description="Simple approach to remove outliers in your log data.\n  Despiking based on difference between the rolling median and the rolling std deviation.",
-                                      authors="author@company",
-                                      version="0.1")
-
 
 
 # Use the variable pwr_description to define the UI in the Prizm Workflow Runner and let the Petrel user select the input data.
@@ -54,15 +41,16 @@ pwr_description.add_object_ref_parameter(name="log_id",
                                         label="Log", 
                                         description="The (continuous) well log to be smoothed", 
                                         object_type=DomainObjectsEnum.WellContinuousLog,
+                                        #object_type='well_continuous_log',
                                         linked_input_name="well_id"                 ## LINKED 
                                         )
 pwr_description.add_object_ref_parameter(name="log_id", 
-                                         label="Select logs:", 
-                                         description="A continuous welllog",
-                                         object_type=DomainObjectsEnum.WellContinuousLog, 
-                                         linked_input_name="well_id"
-                                         select_multiple=True                       ## MULTIPLE
-                                         )
+                                        label="Select logs:", 
+                                        description="A continuous welllog",
+                                        object_type=DomainObjectsEnum.WellContinuousLog, 
+                                        linked_input_name="well_id",
+                                        select_multiple=True                       ## MULTIPLE
+                                        )
 pwr_description.add_object_ref_parameter(name="log_id", 
                                         label="Gamma ray input log",
                                         description="Gamma ray log used to calculate Vshale", 
@@ -78,14 +66,6 @@ pwr_description.add_object_ref_parameter(name='vp',
                                          linked_input_name='input_well',
                                          template_type='P-velocity',        # S-velocity, Porosity - effective, Vshale, Density
                                          measurement_type='m/s'                     ## MEASUREMENT
-                                         )
-pwr_description.add_object_ref_parameter(name='vs',
-                                         label='VS log (Brine saturated case)',
-                                         description='Select a vs log',
-                                         object_type=DomainObjectsEnum.WellContinuousLog,
-                                         linked_input_name='input_well',
-                                         template_type='S-velocity',
-                                         measurement_type='m/s'
                                          )
 pwr_description.add_object_ref_parameter(name='survey',
                                          label='Well survey',
@@ -124,13 +104,6 @@ pwr_description.add_integer_parameter(name='grs_input',
                                         label='Clean rock GR value:',
                                         description='The GammaRay value associated with a clean reservoir having no shale ',
                                         default_value=30, 
-                                        minimum_value=1, 
-                                        maximum_value=1000
-                                        )
-pwr_description.add_integer_parameter(name='grsh_input',
-                                        label='Shale GammaRay value',
-                                        description='The GammaRay value associated with a zone of 100% shale',
-                                        default_value=130, 
                                         minimum_value=1, 
                                         maximum_value=1000
                                         )
