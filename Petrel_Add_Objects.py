@@ -175,10 +175,20 @@ pwr_description.add_object_ref_parameter(
 pwr_description.add_object_ref_parameter(
     name="horizon_interpretation",
     label="Select interpretation",
-    description="Select the  interpretation associated to the selected horizon",
+    description="Select the interpretation associated to the selected horizon",
     object_type=DomainObjectsEnum.HorizonInterpretation3D,
     linked_input_name="horizon",
 )
+
+#### SURFACE OBJECT
+pwr_description.add_object_ref_parameter(
+    name="name_used_to_retrieve_object_from_petrel",
+    label="Label Shown In Petrel UI",
+    description="Description As Shown In Petrel Help Button",
+    object_type=DomainObjectsEnum.Surface,
+)
+
+# End: PWR Description
 
 # End: PWR Description
 
