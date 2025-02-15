@@ -39,21 +39,21 @@ pwr_description.add_object_ref_parameter(name="well_id", # input_well
 
 pwr_description.add_object_ref_parameter(name="log_id", 
                                         label="Log", 
-                                        description="The (continuous) well log to be smoothed", 
+                                        description="Select a continuous log that is linked to the selected well", 
                                         object_type=DomainObjectsEnum.WellContinuousLog,
                                         #object_type='well_continuous_log',
                                         linked_input_name="well_id"                 ## LINKED 
                                         )
 pwr_description.add_object_ref_parameter(name="log_id", 
                                         label="Select logs:", 
-                                        description="A continuous welllog",
+                                        description="Select one or more continuous logs that are linked to the selected well.",
                                         object_type=DomainObjectsEnum.WellContinuousLog, 
                                         linked_input_name="well_id",
                                         select_multiple=True                       ## MULTIPLE
                                         )
 pwr_description.add_object_ref_parameter(name="log_id", 
-                                        label="Gamma ray input log",
-                                        description="Gamma ray log used to calculate Vshale", 
+                                        label="Input log",
+                                        description="Select a continous log of a specific template that is linked to the selected well", 
                                         object_type=DomainObjectsEnum.WellContinuousLog, 
                                         template_type='GammaRay',                   ## TEMPLATE
                                         #template_type=TemplateNamesEnum.GammaRay,  # [i for i in TemplateNamesEnum][0:]
@@ -61,7 +61,7 @@ pwr_description.add_object_ref_parameter(name="log_id",
                                         )
 pwr_description.add_object_ref_parameter(name='vp',
                                          label='VP log (Brine saturated case)',
-                                         description='Select a vp log',
+                                         description='Select a continuous log, linked to the well with a specific template and measurement type',
                                          object_type=DomainObjectsEnum.WellContinuousLog,
                                          linked_input_name='input_well',
                                          template_type='P-velocity',        # S-velocity, Porosity - effective, Vshale, Density
@@ -75,7 +75,7 @@ pwr_description.add_object_ref_parameter(name='survey',
                                          )
 pwr_description.add_object_ref_parameter(name="gwl_id",                             ## GLOBAL WELL LOG
                                         label= "Target Vsh global well log", 
-                                        description="Select the global well log the calculated Vshale should be written to", 
+                                        description="Select the global well log the calculated output log should be written to", 
                                         object_type=DomainObjectsEnum.GlobalLogContinuous, 
                                         template_type='VShale'
                                         )
