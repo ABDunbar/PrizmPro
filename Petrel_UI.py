@@ -4,6 +4,7 @@
 
 from cegalprizm.pycoderunner import WorkflowDescription,DomainObjectsEnum
 
+# dict values are scipy.signal.windows
 smoothing_list={0:"barthann",1:"bartlett",2:"blackman",3:"bohman",4:"boxcar",5:"hann",6:"cosine",7:"nuttall",8:"exponential",9:"flattop",10:"hamming",11:"parzen",12:"taylor",13:"triang",14:"tukey",15:"gaussian"}
 
 # The class WorkflowDescription is used to define the Cegal Prizm workflow. It is assigned to a Python variable called 'pwr_description'
@@ -16,11 +17,39 @@ pwr_description = WorkflowDescription(name="Smooth well log",
 # Use the variable pwr_description to define the UI in the Prizm Workflow Runner and let the Petrel user select the input data.
 # This creates a Python dictionary 'parameters' with the GUID and/or values of the user's input data.
 
-pwr_description.add_object_ref_parameter(name="well_id", label="Well", description="Select well", object_type=DomainObjectsEnum.Well)
-pwr_description.add_object_ref_parameter(name="log_id", label="Log", description="The well log to be smoothed", object_type=DomainObjectsEnum.WellContinuousLog, linked_input_name="well_id")
-pwr_description.add_enum_parameter(name="algorithm_smooth",label="Select the smoothing algorithm",description="List of available algorithms. This is a selection of window types in scipy.signal.windows",options=smoothing_list,default_value=15)
-pwr_description.add_integer_parameter(name="window_length", label="Window Length", description="The window length to be used when smoothing", default_value=80, minimum_value=2, maximum_value=500)
-pwr_description.add_string_parameter(name="suffix", label="Suffix", description="The suffix to be appended to the name of the smoothed log", default_value="smooth")
+pwr_description.add_object_ref_parameter(name="well_id", 
+                                        label="Well", 
+                                        description="Select well", 
+                                        object_type=DomainObjectsEnum.Well  #eg well_id = 10/4-1
+                                        )
+
+pwr_description.add_object_ref_parameter(name="log_id", 
+                                        label="Log", 
+                                        description="The well log to be smoothed", 
+                                        object_type=DomainObjectsEnum.WellContinuousLog, # eg log_id = GR
+                                        linked_input_name="well_id"
+                                        )
+
+pwr_description.add_enum_parameter(name="algorithm_smooth",
+                                        label="Select the smoothing algorithm",
+                                        description="List of available algorithms. This is a selection of window types in scipy.signal.windows",
+                                        options=smoothing_list,  # list provided above
+                                        default_value=15         # gaussian
+                                        )
+
+pwr_description.add_integer_parameter(name="window_length", 
+                                        label="Window Length", 
+                                        description="The window length to be used when smoothing", 
+                                        default_value=80, 
+                                        minimum_value=2, 
+                                        maximum_value=500
+                                        )
+
+pwr_description.add_string_parameter(name="suffix", 
+                                        label="Suffix", 
+                                        description="The suffix to be appended to the name of the smoothed log", 
+                                        default_value="smooth"
+                                        )
 # End: PWR Description
 
 from cegalprizm.pythontool import PetrelConnection, Well ,WellLog
@@ -64,13 +93,48 @@ pwr_description = WorkflowDescription(name="Vsh Calculator",
 # Use the variable pwr_description to define the UI in the Prizm Workflow Runner and let the Petrel user select the input data.
 # This creates a Python dictionary 'parameters' with the GUID and/or values of the user's input data.
 
-pwr_description.add_object_ref_parameter(name="well_id", label="Select well", description="Select the well", object_type=DomainObjectsEnum.Well)
-pwr_description.add_object_ref_parameter(name="log_id", label="Gamma ray input log",description="Gamma ray log used to calculate Vshale", object_type=DomainObjectsEnum.WellContinuousLog, template_type='GammaRay', linked_input_name="well_id")
-pwr_description.add_object_ref_parameter(name="gwl_id",label= "Target Vsh global well log", description="Select the global well log the calculated Vshale should be written to", object_type=DomainObjectsEnum.GlobalLogContinuous, template_type='VShale')
-pwr_description.add_boolean_parameter(name="overwrite_vsh",label="Overwrite if Vsh log exist",description="Decide if existing vsh log should be overwritten",default_value=False)
-pwr_description.add_integer_parameter(name='grs_input',label='Clean rock GR value:',description='The GammaRay value associated with a clean reservoir having no shale ',default_value=30, minimum_value=1, maximum_value=1000)
-pwr_description.add_integer_parameter(name='grsh_input',label='Shale GammaRay value',description='The GammaRay value associated with a zone of 100% shale',default_value=130, minimum_value=1, maximum_value=1000)
-pwr_description.add_enum_parameter(name='methods',label='Select method:',description='Choose which method you want to use for calculation Vsh',options={0:'Linear',1:'Larionov - tertiary rocks',2:'Larionov - older rocks',3:'Clavier',4:'Stieber'})
+pwr_description.add_object_ref_parameter(name="well_id", 
+                                        label="Select well", 
+                                        description="Select the well", 
+                                        object_type=DomainObjectsEnum.Well
+                                        )
+pwr_description.add_object_ref_parameter(name="log_id", 
+                                        label="Gamma ray input log",
+                                        description="Gamma ray log used to calculate Vshale", 
+                                        object_type=DomainObjectsEnum.WellContinuousLog, 
+                                        template_type='GammaRay', 
+                                        linked_input_name="well_id"
+                                        )
+pwr_description.add_object_ref_parameter(name="gwl_id",
+                                        label= "Target Vsh global well log", 
+                                        description="Select the global well log the calculated Vshale should be written to", 
+                                        object_type=DomainObjectsEnum.GlobalLogContinuous, 
+                                        template_type='VShale'
+                                        )
+pwr_description.add_boolean_parameter(name="overwrite_vsh",
+                                        label="Overwrite if Vsh log exist",
+                                        description="Decide if existing vsh log should be overwritten",
+                                        default_value=False
+                                        )
+pwr_description.add_integer_parameter(name='grs_input',
+                                        label='Clean rock GR value:',
+                                        description='The GammaRay value associated with a clean reservoir having no shale ',
+                                        default_value=30, 
+                                        minimum_value=1, 
+                                        maximum_value=1000
+                                        )
+pwr_description.add_integer_parameter(name='grsh_input',
+                                        label='Shale GammaRay value',
+                                        description='The GammaRay value associated with a zone of 100% shale',
+                                        default_value=130, 
+                                        minimum_value=1, 
+                                        maximum_value=1000
+                                        )
+pwr_description.add_enum_parameter(name='methods',
+                                        label='Select method:',
+                                        description='Choose which method you want to use for calculation Vsh',
+                                        options={0:'Linear',1:'Larionov - tertiary rocks',2:'Larionov - older rocks',3:'Clavier',4:'Stieber'}
+                                        )
 # End: PWR Description
 
 print("Establishing PetrelConnection")
